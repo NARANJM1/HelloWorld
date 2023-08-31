@@ -1,0 +1,49 @@
+library(flextable)
+library(ggplot2)
+library(tidyverse)
+  SupplyChain <- read.delim("C:/R Studio Projects/SupplyChain.txt")
+
+SupplyChain %>%
+
+S <- SupplyChain$Shipping.times
+
+hist(
+  S,
+  main = "Product Shipping Lead Times",
+  xlab = "Days",
+  ylab = "SKUs",
+  col = "orange",    
+  border = "black",
+  labels = T,
+  xpd = TRUE   
+)
+
+C <- SupplyChain$Shipping.costs 
+
+hist(
+  C,
+  main = "Shipping Costs (USD)",
+  xlab = "Dollars (USD)",
+  ylab = "SKUs",
+  col = "yellow",    
+  border = "orange",
+  labels = T,
+  xpd = TRUE   
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
