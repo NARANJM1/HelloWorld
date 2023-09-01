@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 ^renv$
 ^renv\.lock$
+=======
+>>>>>>> 328ff6c71a6225e67a5103cf24c6320e787ca695
 ^.*\.Rproj$
 ^\.Rproj\.user$
