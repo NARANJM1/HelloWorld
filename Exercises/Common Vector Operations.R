@@ -1,31 +1,15 @@
-> x * c(5,0,-1)
-[ 1] 5 O -4
+#Exercise: Create a vector z with n elements (use a variable n to define the vector).
+#Create a copy of z but remove the last element by using the function length.
 
-> x <- c(1,2,4)
-> x + c(5,0,-1)
-[1] 6 2 3
+# Define the number of elements n
+n <- 5
 
-> x <- c(1,2,4)
-> x I c(5,4,-1)
-[1] 0.2 o.5 -4.0
-> x %% c(5,4,-1)
-[1] 1 2 0
+# Create a vector z with n elements
+z <- 1:n
 
-> y <- c(1.2,3.9,0.4,0.12)
-> y[c(1,3)] # extract elements 1 and 3 of y
+# Create a copy of z without the last element
+z_copy <- z[1:(length(z) - 1)]
 
-> x <- c(4,2,17,5)
-> y <- x[c(l,1,3)]
-> y
-[1] 4 4 17
-
-> z <- c(5,12,13)
-> z[-1] # exclude element 1
-[1] 12 13
-> z[-1:-2] # exclude elements 1 through 2
-[ 1] 13
-
-#Exercise: Create a vector z with n elements (use a
-#variable n to define the vector).
-#Create a copy of z but remove the last element by
-#using the function length.
+# Print the original and copied vectors
+cat("Original z:", z, "\n")
+cat("Copy of z without the last element:", z_copy, "\n")
