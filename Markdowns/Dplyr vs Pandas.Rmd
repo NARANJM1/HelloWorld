@@ -1,0 +1,117 @@
+---
+title: "Dplyr vs Pandas"
+author: "Miguel Angel Naranjo Mora + 97943"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(reticulate)
+```
+
+Load the Iris dataset in R. and remove the levels of the class variable.
+
+```{r}
+library(dplyr)
+iris_df <- iris
+class(iris_df$Species)
+
+iris_df$Species <- as.character(iris_df$Species)
+
+head(iris_df)
+```
+
+Rename the columns to prevent confusions in Python (dot is python accessor)
+
+```{r}
+colnames(iris_df) <- sub("\\.","_",colnames(iris_df))
+head(iris_df)
+```
+
+Load pandas. Use iris dataset from R in Python
+
+```{python}
+import pandas as pd
+iris_python = pd.DataFrame(r.iris_df)
+type(iris_python)
+iris_python.head()
+```
+
+**Warning!**
+
+In **Pandas** you can use the **filter()** method. This is confusing because the **filter()** function in **dplyr** is used to subset rows based on conditions and not columns! In **dplyr** we use the **select()** function instead.
+
+```{r}
+iris_df %>%
+select(Sepal_Width, Petal_Width)%>%
+head()
+```
+
+```{python}
+#Pass columns as list using [[]]
+iris_python[["Sepal_Width","Petal_Width"]]
+#Or use Filter Function
+iris_python.filter(items=['Sepal_Width','Petal_Width'])
+```
+
+Filter based on conditions
+
+```{r}
+iris_df %>% filter(Sepal_Width > 3.5 & Petal_Width < 0.3)
+```
+
+```{python}
+
+#query API
+iris_python.query("Sepal_Width > 3.5 & Petal_Width < 0.3")
+
+#indexing
+iris_python[(iris_python["Sepal_Width"] > 3.5) & (iris_python["Petal_Width"] < 0.3)]
+```
+
+Renaming a single column
+
+```{r}
+iris_df <- iris_df %>% rename(Class=Species)
+head(iris_df)
+```
+
+```{python}
+iris_python.rename(columns = {'Species': 'Class'}, inplace = True)
+iris_python.head()
+```
+
+Renaming multiple columns based on condition
+
+```{r}
+iris_df <- iris_df %>%
+rename_with(toupper,matches("length|width"))
+head(iris_df)
+```
+
+```{python}
+import re
+pattern = re.compile(r".*(Length|Width)")
+for col in iris_python.columns:
+  if bool((pattern.match(col))):
+    iris_python.rename(columns = {col: col.upper()}, inplace = True)
+iris_python.head()
+```
+
+Altering cell values based on conditions
+
+```{r}
+iris_df <- iris_df %>%
+mutate(Class = case_when(Class == 'setosa' ~ 0
+                           ,Class == 'versicolor' ~ 1
+                           ,Class == 'virginica' ~ 2))
+head(iris_df)
+```
+
+```{python}
+iris_python.loc[iris_python['Class'] == 'setosa', "Class"] = 0
+iris_python.loc[iris_python['Class'] == 'versicolor', "Class"] = 1
+iris_python.loc[iris_python['Class'] == 'virginica', "Class"] = 2
+iris_python.head()
+```
